@@ -9,21 +9,30 @@ input_variables:
   - available_user_actions
   - user_goals
   - starting_instructions
-template: >
+template: |
+  # SIMULATE PERSONA
   {simulate_persona}
 
+  # USER RELATIONSHIP
   {user_relationship}
 
+  # TASK INSTRUCTIONS
   {task_instructions}
 
+  # CONTEXT
   {context}
 
+  # CONSTRAINTS
   {constraints}
 
+  # OUTPUT FORMAT
   {output_format}
 
+  # AVAILABLE USER ACTIONS
   {available_user_actions}
 
+  # USER GOALS
   {user_goals}
 
+  # STARTING INSTRUCTIONS
   {starting_instructions}

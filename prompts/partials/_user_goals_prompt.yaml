@@ -1,5 +1,5 @@
 _type: prompt
 input_variables:
   - user_goals
-template: >
+template: |
   Your ultimate goal is to {user_goals}

@@ -5,10 +5,9 @@ input_variables:
   - style
   - clarity
   - extra
-template: >
-  CONSTRAINTS:
-  [Tone: {tone}]
-  [Voice: {voice}]
-  [Style: {style}]
-  [Clarity: {clarity}]
+template: |
+  - **Tone**: {tone}
+  - **Voice**: {voice}
+  - **Style**: {style}
+  - **Clarity**: {clarity}
   {extra}

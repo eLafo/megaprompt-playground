@@ -2,6 +2,7 @@ _type: prompt
 input_variables:
   - task
   - how_to
-template: >
+template: |
   Your task is {task}. In order to complete it you will need to follow these instructions:
-  {how_to}.
+  
+  {how_to}

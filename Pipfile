@@ -7,6 +7,8 @@ name = "pypi"
 openai = "*"
 streamlit = "*"
 langchain = "*"
+pyyaml = "*"
+pyperclip = "*"
 
 [dev-packages]
 

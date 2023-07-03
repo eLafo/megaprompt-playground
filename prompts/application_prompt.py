@@ -1,5 +1,4 @@
 from langchain.prompts.pipeline import PipelinePromptTemplate
-from langchain.prompts.prompt import PromptTemplate
 from langchain.prompts import load_prompt
 
 full_prompt = load_prompt("prompts/application_prompt.yaml")
