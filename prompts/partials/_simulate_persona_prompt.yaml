@@ -1,0 +1,5 @@
+_type: prompt
+input_variables:
+  - persona
+template: >
+  You are {persona}

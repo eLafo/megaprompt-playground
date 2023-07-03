@@ -1,0 +1,29 @@
+_type: prompt
+input_variables:
+  - simulate_persona
+  - user_relationship
+  - task_instructions
+  - context
+  - constraints
+  - output_format
+  - available_user_actions
+  - user_goals
+  - starting_instructions
+template: >
+  {simulate_persona}
+
+  {user_relationship}
+
+  {task_instructions}
+
+  {context}
+
+  {constraints}
+
+  {output_format}
+
+  {available_user_actions}
+
+  {user_goals}
+
+  {starting_instructions}

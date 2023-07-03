@@ -1,0 +1,14 @@
+_type: prompt
+input_variables:
+  - tone
+  - voice
+  - style
+  - clarity
+  - extra
+template: >
+  CONSTRAINTS:
+  [Tone: {tone}]
+  [Voice: {voice}]
+  [Style: {style}]
+  [Clarity: {clarity}]
+  {extra}
