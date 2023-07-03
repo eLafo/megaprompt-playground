@@ -3,7 +3,13 @@ import openai
 import yaml
 import pyperclip
 
-from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import LLMChain
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+)
+from langchain.schema import AIMessage, HumanMessage, SystemMessage
+
 from prompts.application_prompt import prompt as application_prompt
 
 ROLES_MAP = {
@@ -12,6 +18,8 @@ ROLES_MAP = {
     "system": "system"
 }
 
+def get_system_message():
+    return application_prompt.format(**st.session_state["prompt_inputs"])
 
 def render_prompt_inputs_form():
     final_prompt = application_prompt.final_prompt
@@ -36,11 +44,10 @@ def render_prompt_inputs_form():
 
 
 def render_prompt_preview():
-    prompt = application_prompt.format(**st.session_state["prompt_inputs"])
-    print(prompt)
+    prompt = get_system_message()
     st.markdown(prompt)
     if st.button("Copy to clipboard"):
-        pyperclip.copy(prompt)
+        pyperclip.copy()
 
 
 def init_prompt_inputs():
@@ -106,3 +113,23 @@ def is_empty(variable):
         return True
     else:
         return False
+
+def generate_response(new_message):
+    system_message = SystemMessage(content=get_system_message())
+    human_message = HumanMessage(content=new_message)
+
+    messages = st.session_state.get("messages", [])
+    messages.insert(0, system_message)
+    messages.append(human_message)
+
+    prompt = ChatPromptTemplate.from_messages(messages)
+    
+    llm = ChatOpenAI(openai_api_key=st.session_state["openai_api_key"], temperature=0)
+
+    chain = LLMChain(
+        llm=llm,
+        prompt=prompt,
+        verbose=True)
+    response = chain.predict()
+
+    st.session_state["messages"].append(AIMessage(content=response))
