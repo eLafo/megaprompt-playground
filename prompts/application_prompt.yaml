@@ -8,7 +8,6 @@ input_variables:
   - output_format
   - available_user_actions
   - user_goals
-  - starting_instructions
 template: |
   # SIMULATE PERSONA
   {simulate_persona}
@@ -33,6 +32,3 @@ template: |
 
   # USER GOALS
   {user_goals}
-
-  # STARTING INSTRUCTIONS
-  {starting_instructions}
