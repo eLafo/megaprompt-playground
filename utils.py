@@ -18,8 +18,10 @@ ROLES_MAP = {
     "system": "system"
 }
 
+
 def get_system_message():
     return application_prompt.format(**st.session_state["prompt_inputs"])
+
 
 def render_prompt_inputs_form():
     final_prompt = application_prompt.final_prompt
@@ -43,11 +45,15 @@ def render_prompt_inputs_form():
                         set_prompt_input(key, value)
 
 
+def render_copy_to_clipboard_button(text, key="clipboard"):
+    if st.button("Copy to clipboard", key=key):
+        pyperclip.copy(text)
+
+
 def render_prompt_preview():
     prompt = get_system_message()
     st.markdown(prompt)
-    if st.button("Copy to clipboard"):
-        pyperclip.copy()
+    render_copy_to_clipboard_button(prompt)
 
 
 def init_prompt_inputs():
@@ -114,6 +120,7 @@ def is_empty(variable):
     else:
         return False
 
+
 def generate_response(new_message):
     system_message = SystemMessage(content=get_system_message())
     human_message = HumanMessage(content=new_message)
@@ -123,8 +130,9 @@ def generate_response(new_message):
     messages.append(human_message)
 
     prompt = ChatPromptTemplate.from_messages(messages)
-    
-    llm = ChatOpenAI(openai_api_key=st.session_state["openai_api_key"], temperature=0)
+
+    llm = ChatOpenAI(
+        openai_api_key=st.session_state["openai_api_key"], temperature=0, model="gpt-3.5-turbo-16k")
 
     chain = LLMChain(
         llm=llm,
