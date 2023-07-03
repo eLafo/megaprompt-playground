@@ -43,6 +43,9 @@ def render_prompt_inputs_form():
                 if st.form_submit_button("Submit"):
                     for key, value in inputs.items():
                         set_prompt_input(key, value)
+                        
+    st.header("Raw prompt")
+    st.code(get_system_message())
 
 
 def render_copy_to_clipboard_button(text, key="clipboard"):
@@ -82,7 +85,11 @@ def print_message(message):
     role = ROLES_MAP[message.type]
 
     if message.type != "system":
-        st.chat_message(role).write(message.content)
+        with st.chat_message(role):
+            st.write(message.content)
+            if message.type == "ai":
+                with st.expander("View raw response"):
+                    st.code(message.content)
 
 
 def set_prompt_input(key, value):
