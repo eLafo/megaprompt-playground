@@ -44,9 +44,6 @@ def render_prompt_inputs_form():
                     for key, value in inputs.items():
                         set_prompt_input(key, value)
                         
-    st.header("Raw prompt")
-    st.code(get_system_message())
-
 
 def render_copy_to_clipboard_button(text, key="clipboard"):
     if st.button("Copy to clipboard", key=key):
@@ -89,7 +86,7 @@ def print_message(message):
             st.write(message.content)
             if message.type == "ai":
                 with st.expander("View raw response"):
-                    st.code(message.content)
+                    st.code(message.content, language=None)
 
 
 def set_prompt_input(key, value):
