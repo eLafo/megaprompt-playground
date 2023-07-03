@@ -31,8 +31,8 @@ def main():
     with chat_tab:
         for i, message in enumerate(st.session_state.get("messages", [])):
             utils.print_message(message)
-            if message.type == "ai":
-                utils.render_copy_to_clipboard_button(message.content, key=f"clipboard_{i}")
+            # if message.type == "ai":
+            #     utils.render_copy_to_clipboard_button(message.content, key=f"clipboard_{i}")
 
     with prompt_settings_tab:
         prompt_preview, prompt_settings_form = st.columns(2)

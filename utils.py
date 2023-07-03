@@ -53,7 +53,7 @@ def render_copy_to_clipboard_button(text, key="clipboard"):
 def render_prompt_preview():
     prompt = get_system_message()
     st.markdown(prompt)
-    render_copy_to_clipboard_button(prompt)
+    # render_copy_to_clipboard_button(prompt)
 
 
 def init_prompt_inputs():
