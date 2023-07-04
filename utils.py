@@ -139,11 +139,8 @@ def is_empty(variable):
 
 
 def generate_response(new_message):
-    # system_message = SystemMessage(content=get_system_message())
     human_message = HumanMessage(content=new_message)
 
-    # messages = st.session_state.get("messages", [])
-    # messages.insert(0, system_message)
     messages = st.session_state["messages"]
     messages.append(human_message)
 
