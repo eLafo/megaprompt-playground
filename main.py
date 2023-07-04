@@ -26,7 +26,7 @@ def main():
             with st.spinner("Thinking..."):
                 utils.generate_response(new_message)
 
-    prompt_settings_tab, chat_tab = st.tabs(["Settings", "Chat"])
+    chat_tab, prompt_settings_tab = st.tabs(["Chat", "Settings"])
 
     with chat_tab:
         for message in st.session_state.get("messages", []):
