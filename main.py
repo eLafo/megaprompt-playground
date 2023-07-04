@@ -4,8 +4,8 @@ import utils
 
 def main():
     st.set_page_config(
-        page_title="My App",
-        page_icon="🚀",
+        page_title="Megaprompter",
+        page_icon="📢🤖",
         layout="wide",
     )
 
