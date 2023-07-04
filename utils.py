@@ -23,7 +23,17 @@ def get_system_message():
     return application_prompt.format(**st.session_state["prompt_inputs"])
 
 
+def init():
+    if not "prompt_inputs" in st.session_state:
+        reset_prompt_inputs()
+
+    if not "messages" in st.session_state:
+        reset_messages()
+
+
 def render_prompt_inputs_form():
+    st.header("Inputs")
+
     final_prompt = application_prompt.final_prompt
     pipeline_prompts = dict(application_prompt.pipeline_prompts)
 
@@ -43,7 +53,7 @@ def render_prompt_inputs_form():
                 if st.form_submit_button("Submit"):
                     for key, value in inputs.items():
                         set_prompt_input(key, value)
-                        
+
 
 def render_copy_to_clipboard_button(text, key="clipboard"):
     if st.button("Copy to clipboard", key=key):
@@ -53,29 +63,28 @@ def render_copy_to_clipboard_button(text, key="clipboard"):
 def render_prompt_preview():
     prompt = get_system_message()
     st.markdown(prompt)
-    # render_copy_to_clipboard_button(prompt)
 
 
-def init_prompt_inputs():
-    if "prompt_inputs" not in st.session_state:
-        st.session_state["prompt_inputs"] = {}
+def reset_messages():
+    st.session_state["messages"] = [
+        SystemMessage(content=get_system_message())]
 
-        with open("default_prompt_inputs.yaml", "r") as file:
-            default_values = yaml.safe_load(file)
 
-        final_prompt = application_prompt.final_prompt
-        pipeline_prompts = dict(application_prompt.pipeline_prompts)
+def reset_prompt_inputs():
+    with open("default_prompt_inputs.yaml", "r") as file:
+        default_values = yaml.safe_load(file)
 
-        st.header("Inputs")
+    final_prompt = application_prompt.final_prompt
+    pipeline_prompts = dict(application_prompt.pipeline_prompts)
 
-        for input_variable in final_prompt.input_variables:
-            if input_variable in pipeline_prompts:
-                for input_variable_2 in pipeline_prompts[input_variable].input_variables:
-                    set_prompt_input(input_variable_2,
-                                     default_values[input_variable_2])
-            else:
-                set_prompt_input(
-                    input_variable, default_values[input_variable])
+    for input_variable in final_prompt.input_variables:
+        if input_variable in pipeline_prompts:
+            for input_variable_2 in pipeline_prompts[input_variable].input_variables:
+                set_prompt_input(input_variable_2,
+                                 default_values[input_variable_2])
+        else:
+            set_prompt_input(
+                input_variable, default_values[input_variable])
 
 
 def print_message(message):
@@ -90,7 +99,6 @@ def print_message(message):
                     st.code(message.content, language=None)
                     if "cb" in message.additional_kwargs:
                         st.caption("Costs:")
-                        print(type(message.additional_kwargs["cb"]))
                         st.write(message.additional_kwargs["cb"])
 
 
@@ -131,11 +139,12 @@ def is_empty(variable):
 
 
 def generate_response(new_message):
-    system_message = SystemMessage(content=get_system_message())
+    # system_message = SystemMessage(content=get_system_message())
     human_message = HumanMessage(content=new_message)
 
-    messages = st.session_state.get("messages", [])
-    messages.insert(0, system_message)
+    # messages = st.session_state.get("messages", [])
+    # messages.insert(0, system_message)
+    messages = st.session_state["messages"]
     messages.append(human_message)
 
     prompt = ChatPromptTemplate.from_messages(messages)
@@ -150,4 +159,5 @@ def generate_response(new_message):
     with get_openai_callback() as cb:
         response = chain.predict()
 
-    st.session_state["messages"].append(AIMessage(content=response, additional_kwargs={"cb": cb}))
+    st.session_state["messages"].append(
+        AIMessage(content=response, additional_kwargs={"cb": cb}))

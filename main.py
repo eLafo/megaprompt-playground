@@ -9,14 +9,15 @@ def main():
         layout="wide",
     )
 
-    utils.init_prompt_inputs()
-    if not "messages" in st.session_state:
-        st.session_state["messages"] = []
-    # Render the sidebar
-    with st.sidebar:            
-        # Ask the user for their OpenAI API key
+    utils.init()
+
+    with st.sidebar:
         st.session_state["openai_api_key"] = st.text_input(
             "Enter your OpenAI API key", type="password")
+
+        if st.button("Reset"):
+            utils.reset_messages()
+            utils.reset_prompt_inputs()
 
     prompt_settings_tab, chat_tab = st.tabs(["Settings", "Chat"])
 
@@ -41,6 +42,7 @@ def main():
 
         with prompt_preview:
             utils.render_prompt_preview()
+
 
 if __name__ == "__main__":
     main()
