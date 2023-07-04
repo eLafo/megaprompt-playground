@@ -9,7 +9,7 @@ from langchain.prompts.chat import (
     ChatPromptTemplate,
 )
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
-
+from langchain.callbacks import get_openai_callback
 from prompts.application_prompt import prompt as application_prompt
 
 ROLES_MAP = {
@@ -85,8 +85,13 @@ def print_message(message):
         with st.chat_message(role):
             st.write(message.content)
             if message.type == "ai":
-                with st.expander("View raw response"):
+                with st.expander("View Details"):
+                    st.caption("Raw response:")
                     st.code(message.content, language=None)
+                    if "cb" in message.additional_kwargs:
+                        st.caption("Costs:")
+                        print(type(message.additional_kwargs["cb"]))
+                        st.write(message.additional_kwargs["cb"])
 
 
 def set_prompt_input(key, value):
@@ -142,6 +147,7 @@ def generate_response(new_message):
         llm=llm,
         prompt=prompt,
         verbose=True)
-    response = chain.predict()
+    with get_openai_callback() as cb:
+        response = chain.predict()
 
-    st.session_state["messages"].append(AIMessage(content=response))
+    st.session_state["messages"].append(AIMessage(content=response, additional_kwargs={"cb": cb}))
