@@ -19,15 +19,14 @@ def main():
             utils.reset_messages()
             utils.reset_prompt_inputs()
 
-    prompt_settings_tab, chat_tab = st.tabs(["Settings", "Chat"])
-
     if st.session_state.get("openai_api_key"):
         if not utils.check_openai_api_key(st.session_state["openai_api_key"]):
             st.error("Invalid OpenAI API key")
-            st.stop()
-        if new_message := st.chat_input("Type a message...", key="message_input"):
+        elif new_message := st.chat_input("Type a message...", key="message_input"):
             with st.spinner("Thinking..."):
                 utils.generate_response(new_message)
+
+    prompt_settings_tab, chat_tab = st.tabs(["Settings", "Chat"])
 
     with chat_tab:
         for message in st.session_state.get("messages", []):
